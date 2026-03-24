@@ -6,6 +6,7 @@ export default function Game({ audioOn }) {
   const [maxScore, setMaxScore] = useState(0);
   const [pokemon, setPokemon] = useState([]);
   const [clickedPokemon, setClickedPokemon] = useState([]);
+  const [gameOver, setGameOver] = useState(false);
   const pokemonCount = 16;
   const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
 
@@ -25,15 +26,19 @@ export default function Game({ audioOn }) {
   };
 
   const handleClick = (e, pokemonName) => {
+    if (gameOver) {
+      return;
+    }
     if (clickedPokemon.includes(pokemonName)) {
-      // game over
+      setGameOver(true);
+      return;
     }
     setCurrentScore(currentScore + 1);
     setMaxScore(Math.max(maxScore, currentScore + 1));
     setPokemon(shuffle(pokemon));
     const newClickedPokemon = [...clickedPokemon];
     newClickedPokemon.push(pokemonName);
-    setClickedPokemon(clickedPokemon);
+    setClickedPokemon(newClickedPokemon);
     e.preventDefault();
   };
 
@@ -59,6 +64,7 @@ export default function Game({ audioOn }) {
   };
 
   const newGame = () => {
+    setGameOver(false);
     setCurrentScore(0);
     fetchRandomPokemon();
   };
