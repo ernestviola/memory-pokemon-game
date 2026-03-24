@@ -1,3 +1,25 @@
+.cards {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0px auto;
+  padding: 20px;
+  padding-top: 40px;
+}
+
+@media (max-width: 800px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  .cards {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -17,9 +39,14 @@
 
 .card img {
   width: 80%;
+  max-width: 250px;
   transition: 0.2s;
 }
 
 .card img:hover {
   transform: translate(0px, -8px);
+}
+
+.card.clicked {
+  background-color: gold;
 }

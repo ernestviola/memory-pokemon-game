@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
 import Card from '../components/Card';
+import GameOverDialog from '../components/GameOverDialog';
 
 export default function Game({ audioOn }) {
   const [currentScore, setCurrentScore] = useState(0);
   const [maxScore, setMaxScore] = useState(0);
   const [pokemon, setPokemon] = useState([]);
   const [clickedPokemon, setClickedPokemon] = useState([]);
+  const [showClicked, setShowClicked] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const pokemonCount = 16;
+  const [level, setLevel] = useState(2);
+  const [pokemonCount, setPokemonCount] = useState(4);
+  const [round, setRound] = useState(0);
   const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
 
   const shuffle = (arr) => {
@@ -26,20 +30,24 @@ export default function Game({ audioOn }) {
   };
 
   const handleClick = (e, pokemonName) => {
-    if (gameOver) {
-      return;
-    }
+    e.preventDefault();
+    if (gameOver) return;
+
     if (clickedPokemon.includes(pokemonName)) {
       setGameOver(true);
+      setShowClicked(true);
       return;
     }
+
     setCurrentScore(currentScore + 1);
     setMaxScore(Math.max(maxScore, currentScore + 1));
     setPokemon(shuffle(pokemon));
-    const newClickedPokemon = [...clickedPokemon];
-    newClickedPokemon.push(pokemonName);
-    setClickedPokemon(newClickedPokemon);
-    e.preventDefault();
+    setClickedPokemon([...clickedPokemon, pokemonName]);
+
+    if (clickedPokemon.length === pokemonCount - 1) {
+      setGameOver(true);
+      setShowClicked(true);
+    }
   };
 
   const fetchRandomPokemon = async () => {
@@ -65,7 +73,10 @@ export default function Game({ audioOn }) {
 
   const newGame = () => {
     setGameOver(false);
+    setShowClicked(false);
     setCurrentScore(0);
+    setClickedPokemon([]);
+    setRound((r) => r + 1);
     fetchRandomPokemon();
   };
 
@@ -78,32 +89,54 @@ export default function Game({ audioOn }) {
 
   useEffect(() => {
     fetchRandomPokemon();
-  }, []);
+  }, [pokemonCount, round]);
 
   return (
     <div>
       <main>
+        Level : {level - 1}
         Current Score: {currentScore}
         Max Score: {maxScore}
         <button onClick={newGame}>Start Game</button>
-        <div className='cards'>
+        <div
+          className='cards'
+          style={{ '--columns': `${Math.sqrt(pokemonCount)}` }}
+        >
           {pokemon.map((data) => {
             return (
               <Card
+                key={data.name}
                 handleClick={(e) => {
                   playCry(data.cries.latest);
 
                   handleClick(e, data.name);
                 }}
-                key={data.name}
+                className={
+                  showClicked && clickedPokemon.includes(data.name)
+                    ? 'clicked'
+                    : ''
+                }
               >
-                <span>{data.name.toUpperCase()}</span>
+                <span style={{ padding: '8px' }}>
+                  {data.name.toUpperCase()}
+                </span>
                 <img src={data.sprites.front_default} alt={data.name} />
               </Card>
             );
           })}
         </div>
       </main>
+      {gameOver && (
+        <GameOverDialog
+          gameOver={gameOver}
+          pokemonCount={pokemonCount}
+          setPokemonCount={setPokemonCount}
+          level={level}
+          setLevel={setLevel}
+          currentScore={currentScore}
+          newGame={newGame}
+        />
+      )}
     </div>
   );
 }

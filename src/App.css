@@ -1,18 +1,22 @@
+@font-face {
+  font-family: 'Snowbell';
+  src:
+    url('./fonts/Snowbell.woff2') format('woff2'),
+    url('./fonts/Snowbell.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   background-color: rgb(71, 164, 226);
+  font-family: 'Snowbell';
 }
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  justify-content: center;
-  max-width: 1000px;
-  margin: 0px auto;
+main {
+  padding-top: 40px;
 }
 
-@media (max-width: 600px) {
-  .cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
+button {
+  cursor: pointer;
 }

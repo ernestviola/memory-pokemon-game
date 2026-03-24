@@ -20,7 +20,6 @@ export default function CloudBg() {
       const cloudHeight = Math.floor(Math.random() * 100) + 20;
       const cloudTop = Math.floor(Math.random() * 80);
       const duration = Math.floor(Math.random() * 10) + 20;
-      console.log(prevClouds);
       return [
         ...prevClouds,
         {
