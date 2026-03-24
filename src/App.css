@@ -1,0 +1,18 @@
+body {
+  background-color: rgb(71, 164, 226);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0px auto;
+}
+
+@media (max-width: 600px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
