@@ -94,10 +94,12 @@ export default function Game({ audioOn }) {
   return (
     <div>
       <main>
-        Level : {level - 1}
-        Current Score: {currentScore}
-        Max Score: {maxScore}
-        <button onClick={newGame}>Start Game</button>
+        <div>
+          <span>Level : {level - 1}</span>
+          <span>Current Score: {currentScore}</span>
+          <span>Max Score: {maxScore}</span>
+          <button onClick={newGame}>Start Game</button>
+        </div>
         <div
           className='cards'
           style={{ '--columns': `${Math.sqrt(pokemonCount)}` }}

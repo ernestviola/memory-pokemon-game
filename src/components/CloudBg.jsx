@@ -5,6 +5,7 @@ import cloud3 from '../assets/cloud-3.png';
 import cloud4 from '../assets/cloud-4.png';
 import cloud5 from '../assets/cloud-5.png';
 import cloud6 from '../assets/cloud-6.png';
+
 import { v4 as uuidv4 } from 'uuid';
 
 import '../styles/cloud.css';

@@ -20,3 +20,13 @@ main {
 button {
   cursor: pointer;
 }
+
+.volume-controller {
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+}
+
+.volume-controller > img {
+  height: 50px;
+}
