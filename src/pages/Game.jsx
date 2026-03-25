@@ -82,7 +82,7 @@ export default function Game({ audioOn, pokemonCache }) {
   useEffect(() => {
     if (Object.keys(pokemonCache).length === 0) return;
     fetchRandomPokemon(pokemonCount);
-  }, [pokemonCount, round]);
+  }, [pokemonCount, round, pokemonCache]);
 
   return (
     <div>

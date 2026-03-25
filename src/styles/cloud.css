@@ -10,7 +10,7 @@
 
 .cloud {
   position: absolute;
-  right: -300px;
+  right: -500px;
   transition: transform var(--duration) linear;
 }
 
