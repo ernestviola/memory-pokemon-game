@@ -4,7 +4,7 @@ import GameOverDialog from '../components/GameOverDialog';
 
 import '../styles/game.css';
 
-export default function Game({ audioOn, pokemonCache }) {
+export default function Game({ audioOn }) {
   const [currentScore, setCurrentScore] = useState(0);
   const [maxScore, setMaxScore] = useState(0);
   const [pokemon, setPokemon] = useState([]);
@@ -51,7 +51,7 @@ export default function Game({ audioOn, pokemonCache }) {
     }
   };
 
-  const fetchRandomPokemon = (count = pokemonCount) => {
+  const fetchRandomPokemon = async (count = pokemonCount) => {
     const randomIds = [];
     while (randomIds.length !== count) {
       const randomId = Math.floor(Math.random() * 151) + 1;
@@ -60,7 +60,13 @@ export default function Game({ audioOn, pokemonCache }) {
       }
     }
 
-    setPokemon(randomIds.map((id) => pokemonCache[id]));
+    const fetchPromises = randomIds.map((id) =>
+      fetch(`https://pokeapi.co/api/v2/pokemon/${id}`),
+    );
+    const responses = await Promise.all(fetchPromises);
+    const pokemonData = await Promise.all(responses.map((res) => res.json()));
+
+    setPokemon(pokemonData);
   };
 
   const newGame = (nextPokemonCount = pokemonCount) => {
@@ -80,9 +86,8 @@ export default function Game({ audioOn, pokemonCache }) {
   };
 
   useEffect(() => {
-    if (Object.keys(pokemonCache).length === 0) return;
     fetchRandomPokemon(pokemonCount);
-  }, [pokemonCount, round, pokemonCache]);
+  }, [pokemonCount, round]);
 
   return (
     <div>
