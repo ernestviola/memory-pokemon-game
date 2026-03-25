@@ -4,7 +4,7 @@ import GameOverDialog from '../components/GameOverDialog';
 
 import '../styles/game.css';
 
-export default function Game({ audioOn }) {
+export default function Game({ audioOn, pokemonCache }) {
   const [currentScore, setCurrentScore] = useState(0);
   const [maxScore, setMaxScore] = useState(0);
   const [pokemon, setPokemon] = useState([]);
@@ -14,7 +14,6 @@ export default function Game({ audioOn }) {
   const [level, setLevel] = useState(2);
   const [pokemonCount, setPokemonCount] = useState(4);
   const [round, setRound] = useState(0);
-  const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
 
   const shuffle = (arr) => {
     const pokemonCopy = [...arr];
@@ -52,25 +51,16 @@ export default function Game({ audioOn }) {
     }
   };
 
-  const fetchRandomPokemon = async () => {
+  const fetchRandomPokemon = (count = pokemonCount) => {
     const randomIds = [];
-    while (randomIds.length !== pokemonCount) {
-      //add a random id from 151
+    while (randomIds.length !== count) {
       const randomId = Math.floor(Math.random() * 151) + 1;
       if (!randomIds.includes(randomId)) {
         randomIds.push(randomId);
       }
     }
 
-    try {
-      const fetchPromises = randomIds.map((id) => fetch(baseUrl + id));
-      const responses = await Promise.all(fetchPromises);
-      const pokemonData = await Promise.all(responses.map((res) => res.json()));
-
-      setPokemon(pokemonData);
-    } catch (error) {
-      console.error('Failed to get pokemon' + error);
-    }
+    setPokemon(randomIds.map((id) => pokemonCache[id]));
   };
 
   const newGame = (nextPokemonCount = pokemonCount) => {
@@ -79,9 +69,7 @@ export default function Game({ audioOn }) {
     setCurrentScore(0);
     setClickedPokemon([]);
     setRound((r) => r + 1);
-    if (nextPokemonCount !== pokemonCount) {
-      setPokemonCount(nextPokemonCount);
-    }
+    if (nextPokemonCount !== pokemonCount) setPokemonCount(nextPokemonCount);
   };
 
   const playCry = (cryUrl) => {
@@ -92,7 +80,8 @@ export default function Game({ audioOn }) {
   };
 
   useEffect(() => {
-    fetchRandomPokemon();
+    if (Object.keys(pokemonCache).length === 0) return;
+    fetchRandomPokemon(pokemonCount);
   }, [pokemonCount, round]);
 
   return (
@@ -104,7 +93,7 @@ export default function Game({ audioOn }) {
             <span>Current Score: {currentScore}</span>
             <span>Max Score: {maxScore}</span>
           </div>
-          <button onClick={newGame}>Restart Game</button>
+          <button onClick={() => newGame()}>Restart Game</button>
         </div>
         <div
           className='cards'

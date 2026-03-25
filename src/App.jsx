@@ -10,6 +10,7 @@ import volumeOn from './assets/volume-on.png';
 import volumeOff from './assets/volume-off.png';
 
 function App() {
+  const [pokemonCache, setPokemonCache] = useState([]);
   const [audioOn, setAudioOn] = useState(false);
   const music = useRef(new Audio(route33));
 
@@ -26,6 +27,22 @@ function App() {
       music.current.pause();
     };
   }, [audioOn]);
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      const ids = Array.from({ length: 151 }, (_, i) => i + 1);
+      const fetchPromises = ids.map((id) =>
+        fetch(`https://pokeapi.co/api/v2/pokemon/${id}`),
+      );
+      const responses = await Promise.all(fetchPromises);
+      const pokemonData = await Promise.all(responses.map((res) => res.json()));
+
+      const cache = {};
+      pokemonData.forEach((p) => (cache[p.id] = p));
+      setPokemonCache(cache);
+    };
+    fetchAll();
+  }, []);
 
   return (
     <div>
@@ -45,7 +62,7 @@ function App() {
       )}
       {gameState === 'play' && (
         <>
-          <Game audioOn={audioOn} />
+          <Game audioOn={audioOn} pokemonCache={pokemonCache} />
           <CloudBg />
         </>
       )}

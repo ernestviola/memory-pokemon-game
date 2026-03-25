@@ -29,7 +29,7 @@ export default function GameOverDialog({
       <div className='dialog-content'>
         <h3>Game Over</h3>
         <div className='dialog-buttons'>
-          <button onClick={newGame}>Retry Level?</button>
+          <button onClick={() => newGame()}>Retry Level?</button>
         </div>
       </div>
     </div>
