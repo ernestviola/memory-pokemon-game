@@ -1,0 +1,21 @@
+.title__container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title__container > img {
+  height: 140px;
+}
+
+.title__container > span {
+  font-size: 28px;
+  position: relative;
+  top: -20px;
+  left: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgba(165, 165, 165, 0.55);
+}

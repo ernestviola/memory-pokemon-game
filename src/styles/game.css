@@ -1,0 +1,17 @@
+.game-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.game-stats-level {
+  color: rgb(184, 55, 55);
+  font-size: 24px;
+}
+
+.game-stats-score {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}

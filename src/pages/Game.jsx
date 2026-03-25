@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import Card from '../components/Card';
 import GameOverDialog from '../components/GameOverDialog';
 
+import '../styles/game.css';
+
 export default function Game({ audioOn }) {
   const [currentScore, setCurrentScore] = useState(0);
   const [maxScore, setMaxScore] = useState(0);
@@ -71,13 +73,15 @@ export default function Game({ audioOn }) {
     }
   };
 
-  const newGame = () => {
+  const newGame = (nextPokemonCount = pokemonCount) => {
     setGameOver(false);
     setShowClicked(false);
     setCurrentScore(0);
     setClickedPokemon([]);
     setRound((r) => r + 1);
-    fetchRandomPokemon();
+    if (nextPokemonCount !== pokemonCount) {
+      setPokemonCount(nextPokemonCount);
+    }
   };
 
   const playCry = (cryUrl) => {
@@ -94,11 +98,13 @@ export default function Game({ audioOn }) {
   return (
     <div>
       <main>
-        <div>
-          <span>Level : {level - 1}</span>
-          <span>Current Score: {currentScore}</span>
-          <span>Max Score: {maxScore}</span>
-          <button onClick={newGame}>Start Game</button>
+        <div className='game-stats'>
+          <span className='game-stats-level'>Level : {level - 1}</span>
+          <div className='game-stats-score'>
+            <span>Current Score: {currentScore}</span>
+            <span>Max Score: {maxScore}</span>
+          </div>
+          <button onClick={newGame}>Restart Game</button>
         </div>
         <div
           className='cards'

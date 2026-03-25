@@ -1,0 +1,21 @@
+.rules {
+  background-color: rgb(198, 194, 194);
+  margin: 100px auto;
+  border: 10px solid rgb(235 72 64);
+  border-radius: 4px;
+  width: 700px;
+  padding: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rules > h1 {
+  text-align: center;
+}
+
+.rules > button {
+  width: 80px;
+  align-self: center;
+}

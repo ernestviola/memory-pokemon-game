@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
+import Title from './components/Title';
+import Rules from './pages/Rules';
 import Game from './pages/Game';
+
 import CloudBg from './components/CloudBg';
 import route33 from './audio/route33.mp3';
 import volumeOn from './assets/volume-on.png';
@@ -9,6 +12,8 @@ import volumeOff from './assets/volume-off.png';
 function App() {
   const [audioOn, setAudioOn] = useState(false);
   const music = useRef(new Audio(route33));
+
+  const [gameState, setGameState] = useState('rules');
 
   useEffect(() => {
     if (audioOn) {
@@ -34,8 +39,16 @@ function App() {
           <img src={volumeOff} alt='Volume Off' />
         )}
       </button>
-      <Game audioOn={audioOn} />
-      <CloudBg />
+      <Title />
+      {gameState === 'rules' && (
+        <Rules setGameState={setGameState} setAudioOn={setAudioOn} />
+      )}
+      {gameState === 'play' && (
+        <>
+          <Game audioOn={audioOn} />
+          <CloudBg />
+        </>
+      )}
     </div>
   );
 }
