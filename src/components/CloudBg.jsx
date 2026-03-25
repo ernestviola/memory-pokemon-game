@@ -12,6 +12,35 @@ import '../styles/cloud.css';
 
 const cloudImages = [cloud1, cloud2, cloud3, cloud4, cloud5, cloud6];
 
+function Cloud({ cloud, onRemove }) {
+  useEffect(() => {
+    const animateTimer = setTimeout(() => {
+      document.getElementById(cloud.uuid)?.classList.add('animate');
+    }, 50);
+    const removeTimer = setTimeout(() => {
+      onRemove(cloud.uuid);
+    }, cloud.duration * 1000);
+
+    return () => {
+      clearTimeout(animateTimer);
+      clearTimeout(removeTimer);
+    };
+  }, []); // only runs once per cloud mount
+
+  return (
+    <span
+      id={cloud.uuid}
+      className='cloud'
+      style={{
+        top: `${cloud.top}%`,
+        '--duration': `${cloud.duration}s`,
+      }}
+    >
+      <img src={cloud.src} style={{ height: `${cloud.height}px` }} />
+    </span>
+  );
+}
+
 export default function CloudBg() {
   const [clouds, setClouds] = useState([]);
 
@@ -44,32 +73,15 @@ export default function CloudBg() {
 
   return (
     <div className='cloud-layer'>
-      {clouds.map((cloud) => {
-        return (
-          <span
-            className='cloud'
-            key={cloud.uuid}
-            style={{
-              top: `${cloud.top}%`,
-              '--duration': `${cloud.duration}s`,
-            }}
-            ref={(el) => {
-              if (el) {
-                setTimeout(() => {
-                  el.classList.add('animate');
-                }, 50);
-                setTimeout(() => {
-                  setClouds((prev) =>
-                    prev.filter((c) => c.uuid !== cloud.uuid),
-                  );
-                }, cloud.duration * 1000);
-              }
-            }}
-          >
-            <img src={cloud.src} style={{ height: `${cloud.height}px` }} />
-          </span>
-        );
-      })}
+      {clouds.map((cloud) => (
+        <Cloud
+          key={cloud.uuid}
+          cloud={cloud}
+          onRemove={(uuid) =>
+            setClouds((prev) => prev.filter((c) => c.uuid !== uuid))
+          }
+        />
+      ))}
     </div>
   );
 }
