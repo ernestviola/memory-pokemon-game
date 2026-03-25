@@ -12,7 +12,7 @@ export default function Game({ audioOn, pokemonCache }) {
   const [showClicked, setShowClicked] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [level, setLevel] = useState(2);
-  const [pokemonCount, setPokemonCount] = useState(4);
+  const [pokemonCount, setPokemonCount] = useState(level * level);
   const [round, setRound] = useState(0);
 
   const shuffle = (arr) => {
@@ -114,9 +114,7 @@ export default function Game({ audioOn, pokemonCache }) {
                     : ''
                 }
               >
-                <span style={{ padding: '8px' }}>
-                  {data.name.toUpperCase()}
-                </span>
+                <span>{data.name.toUpperCase()}</span>
                 <img src={data.sprites.front_default} alt={data.name} />
               </Card>
             );

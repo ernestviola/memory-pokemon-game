@@ -2,10 +2,10 @@
   display: grid;
   grid-template-columns: repeat(var(--columns), 1fr);
   gap: 1.5rem;
-  max-width: 800px;
+  max-width: 700px;
   margin: 0px auto;
   padding: 20px;
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 @media (max-width: 800px) {
@@ -30,6 +30,13 @@
   border-radius: 4px;
   cursor: pointer;
   transition: 0.2s;
+  min-width: 40px;
+  container-type: inline-size;
+}
+
+.card span {
+  padding-top: 10px;
+  font-size: clamp(0.3rem, 15cqi, 1rem);
 }
 
 .card:hover {
